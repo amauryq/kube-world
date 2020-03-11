@@ -73,7 +73,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/3f7d3e6c24f641
 sudo kubeadm join $controller_private_ip:6443 --token $token --discovery-token-ca-cert-hash $hash
 ```
 
-## Verify
+### Verify
 
 9. Verify that all nodes are joined and ready
 
@@ -81,7 +81,7 @@ sudo kubeadm join $controller_private_ip:6443 --token $token --discovery-token-c
 kubectl get nodes
 ```
 
-## Lesson Reference
+## Kubernetes API primitives
 
 ```bash
 kubectl api-resources -o name
@@ -97,6 +97,6 @@ kubectl get nodes $node_name -o yaml
 kubectl describe node $node_name
 ```
 
-## Relevant Documentation
+Relevant Documentation
 
 [https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects)
