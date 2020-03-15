@@ -42,6 +42,11 @@ kubectl apply -f my-pod.yml
 kubectl edit my-pod.yml
 ```
 
+## You can read the logs
+
+```bash
+kubectl logs my-config-map-pod
+```
 
 
 ## You can delete a pod like this
