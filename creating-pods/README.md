@@ -42,12 +42,17 @@ kubectl apply -f my-pod.yml
 kubectl edit my-pod.yml
 ```
 
-## You can read the logs
+## Explore how the ConfigMap data interacts with pods and containers
 
 ```bash
-kubectl logs my-config-map-pod
-```
+kubectl logs my-configmap-pod
 
+kubectl logs my-configmap-volume-pod
+
+kubectl exec my-configmap-volume-pod -- ls /etc/config
+
+kubectl exec my-configmap-volume-pod -- cat /etc/config/myKey
+```
 
 ## You can delete a pod like this
 
