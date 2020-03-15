@@ -54,6 +54,12 @@ kubectl exec my-configmap-volume-pod -- ls /etc/config
 kubectl exec my-configmap-volume-pod -- cat /etc/config/myKey
 ```
 
+## Creating a ServiceAccount looks like this
+
+```bash
+kubectl create serviceaccount my-serviceaccount
+```
+
 ## You can delete a pod like this
 
 ```bash
