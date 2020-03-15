@@ -1,20 +1,24 @@
 # Working with Pods
 
-## Creating a new object
+## Create a pod from the yaml definition file
 
 ```bash
 kubectl create -f my-pod.yml
 ```
 
-## Change existing objects
+## Edit a pod by updating the yaml definiton and re-applying it
 
 ```bash
 kubectl apply -f my-pod.yml
+```
 
+## You can also edit a pod like this
+
+```bash
 kubectl edit my-pod.yml
 ```
 
-## Deleting objects
+## You can delete a pod like this
 
 ```bash
 kubectl delete pod my-pod
