@@ -1,3 +1,5 @@
+# Forwarding Port Traffic with an Ambassador Container
+
 ## Use the busybox pod to test the legacy service on port 80.
 
 ```bash
