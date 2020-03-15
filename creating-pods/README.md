@@ -13,3 +13,9 @@ kubectl apply -f my-pod.yml
 
 kubectl edit my-pod.yml
 ```
+
+## Deleting objects
+
+```bash
+kubectl delete pod my-pod
+```
