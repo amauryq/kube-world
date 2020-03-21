@@ -22,7 +22,8 @@ kubectl create -f my-pod.yml
 
 ```bash
 kubectl get pods -n my-ns
-kubectl get pods --all-namespaces
+kubectl get pods --all-namespaces --show-labels
+kubectl get pods -l app=my-app
 kubectl get pods ngnix -n ngnix-ns -o yaml --export > nginx.yml
 kubectl apply -f nginx.yml -n ngnix-ns
 ```
