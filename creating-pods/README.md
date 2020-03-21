@@ -22,6 +22,7 @@ kubectl create -f my-pod.yml
 
 ```bash
 kubectl get pods -n my-ns
+kubectl get pods --all-namespaces
 ```
 
 ## You can also use -n to specify a namespace when using kubectl describe
