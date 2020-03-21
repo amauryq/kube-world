@@ -23,7 +23,7 @@ kubectl create -f my-pod.yml
 ```bash
 kubectl get pods -n my-ns
 kubectl get pods --all-namespaces
-kubectl get pods ngnix -n ngnix-ns -o yaml --export
+kubectl get pods ngnix -n ngnix-ns -o yaml --export > nginx.yml
 ```
 
 ## You can also use -n to specify a namespace when using kubectl describe
