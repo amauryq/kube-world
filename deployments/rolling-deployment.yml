@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: rolling-deployment
 spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 2
   replicas: 3
   selector:
     matchLabels:
