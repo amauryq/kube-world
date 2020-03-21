@@ -47,7 +47,7 @@ kubectl edit my-pod.yml
 ```bash
 kubectl logs my-configmap-pod
 
-kubectl logs my-configmap-volume-pod
+kubectl logs my-configmap-volume-pod -c <multi_container_pod>
 
 kubectl exec my-configmap-volume-pod -- ls /etc/config
 
