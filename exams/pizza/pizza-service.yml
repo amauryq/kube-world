@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pizza-service
+spec:
+  type: ClusterIP
+  selector:
+    app: pizza
+  ports:
+  - protocol: TCP
+    port: 30080
+    targetPort: 80
