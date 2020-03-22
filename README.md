@@ -84,6 +84,8 @@ kubectl get nodes
 ## Kubernetes API primitives
 
 ```bash
+kubectl config use-context <cluster-name>
+
 kubectl api-resources -o name
 
 kubectl get pods -n kube-system
