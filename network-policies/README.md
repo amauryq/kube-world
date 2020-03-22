@@ -21,3 +21,14 @@ kubectl apply -f network-policy-client-pod.yml
 ```
 
 ## Use this command to get the cluster IP address of the Nginx pod
+
+```bash
+kubectl get pod network-policy-secure-pod -o wide
+```
+
+## Use the secure pod's IP address to test network access from the client pod to the secure Nginx pod
+
+```bash
+kubectl exec network-policy-client-pod -- curl <secure pod cluster ip address>
+```
+
