@@ -19,9 +19,15 @@ spec:
         command: [ 'nginx', '-g', 'daemon off;']
         ports:
         - containerPort: 80
-        readinessProbe:
+        livenessProbe:
           httpGet:
             path: /healthz
             port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
           initialDelaySeconds: 5
           periodSeconds: 5
