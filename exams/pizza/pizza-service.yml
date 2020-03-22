@@ -4,10 +4,10 @@ metadata:
   name: pizza-service
   namespace: pizza
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: pizza
   ports:
   - protocol: TCP
-    port: 30080
-    targetPort: 80
+    port: 80
+    nodePort: 30080
