@@ -14,7 +14,7 @@ spec:
         app: pizza
     spec:
       containers:
-      - name: pizza-service
+      - name: pizza
         image: linuxacademycontent/pizza-service:1.14.6
         command: [ 'nginx', '-g', 'daemon off;']
         ports:
