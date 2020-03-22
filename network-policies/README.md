@@ -32,3 +32,9 @@ kubectl get pod network-policy-secure-pod -o wide
 kubectl exec network-policy-client-pod -- curl <secure pod cluster ip address>
 ```
 
+## Get information about NetworkPolicies in the cluster
+
+```bash
+kubectl get networkpolicies
+kubectl describe networkpolicy my-network-policy
+```
