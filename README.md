@@ -107,6 +107,8 @@ kubectl api-resources -o name
 
 ## Relevant Documentation
 
+[The Pod of Minerva](https://interactive.linuxacademy.com/diagrams/ThePodofMinerva.html)
+
 [Kubernetes Binaries](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.0)
 
 [Install Minikube](https://github.com/kubernetes/minikube)
