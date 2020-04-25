@@ -135,5 +135,7 @@ kubectl get pods -n kube-system -w
 [Kubernetes Binaries](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.0)
 
 [Creating Highly Available Kubernetes Clusters with kubeadm](https://kubernetes.io/docs/setup/independent/high-availability/)
+
 [Highly Available Topologies in Kubernetes](https://kubernetes.io/docs/setup/independent/ha-topology/)
+
 [Operating a Highly Available etcd Cluster](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/)
