@@ -3,19 +3,19 @@
 ## Kubernetes API primitives
 
 ```bash
+# cluster
+kubectl cluster-info
+kubectl get componentstatus
+kubectl config view
+kubectl config use-context <cluster-name>
+kubectl get services --all-namespaces
+kubectl api-resources -o name
 # nodes
 kubectl get nodes [-o wide]
 kubectl get nodes $node_name
 kubectl get nodes $node_name -o yaml 
 kubectl describe nodes
 kubectl describe node $node_name
-# others
-kubectl get componentstatus
-kubectl cluster-info
-kubectl config view
-kubectl config use-context <cluster-name>
-kubectl get services --all-namespaces
-kubectl api-resources -o name
 ```
 
 ## Relevant Documentation

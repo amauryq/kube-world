@@ -1,6 +1,6 @@
-# Kubernetes Install - Build Your Cluster
+# Kubernetes Install
 
-## Steps
+## Build Your Cluster
 
 ### On all servers
 
@@ -88,6 +88,52 @@ sudo kubeadm join $controller_private_ip:6443 --token $token --discovery-token-c
 kubectl get nodes
 ```
 
+## High Availability
+
+You can provide high availability for cluster components by running multiple instances — however, some replicated components must remain in standby mode. The scheduler and the controller manager are actively watching the cluster state and take action when it changes. If multiples are running, it creates the possibility of unwarranted duplicates of pods.
+
+## Check environment
+
+1. Which components are in which node
+
+```bash
+kubectl get pods -o custom-columns=POD:metadata.name,NODE:spec.nodeName --sort-by spec.nodeName -n kube-system
+```
+
+2. View the kube-scheduler YAML and find who is the leader
+
+```bash
+kubectl get endpoints kube-scheduler -n kube-system -o yaml
+```
+
+## Replicating etcd component
+
+Best to have an odd number and no more than seven for any cluster size
+
+3. Create a stacked etcd topology using kubeadm.
+
+- Download the etcd binaries
+- Extract and move binaries to /usr/local/bin
+- Create two directories:
+   * /etc/etcd
+   * /var/lib/etcd
+- Create the systemd unit file for etcd
+- enable and start etcd service
+
+```bash
+kubeadm init --config=kubeadm-config.yaml
+```
+
+4. Watch as pods are created
+
+```bash
+kubectl get pods -n kube-system -w
+```
+
 ## Documentation
 
 [Kubernetes Binaries](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.0)
+
+[Creating Highly Available Kubernetes Clusters with kubeadm](https://kubernetes.io/docs/setup/independent/high-availability/)
+[Highly Available Topologies in Kubernetes](https://kubernetes.io/docs/setup/independent/ha-topology/)
+[Operating a Highly Available etcd Cluster](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/)
