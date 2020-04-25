@@ -1,5 +1,7 @@
 # Minikube on Windows using VMWare Workstation
 
+## Steps
+
 Download the .exe file for Windows and rename the file to docker-machine-driver-vmware.exe and place it somewhere in your path.
 I picked C:\Windows\System32 but anywhere that’s set up in your ENV should be fine.
 
@@ -31,3 +33,7 @@ Reboot, delete your minikube instance and try again
 ```bash
 minikube delete
 ```
+
+## Documentation
+
+[Install Minikube](https://github.com/kubernetes/minikube)

@@ -1,4 +1,6 @@
-## Build Your Cluster
+# Kubernetes Install - Build Your Cluster
+
+## Steps
 
 ### On all servers
 
@@ -85,3 +87,7 @@ sudo kubeadm join $controller_private_ip:6443 --token $token --discovery-token-c
 ```bash
 kubectl get nodes
 ```
+
+## Documentation
+
+[Kubernetes Binaries](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.0)

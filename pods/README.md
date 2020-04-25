@@ -20,9 +20,13 @@ kubectl create -f my-pod.yml
 
 ## Use the -n flag to specify a namespace when using commands like kubectl get
 
+# pods
+
 ```bash
 kubectl get pods -n my-ns
 kubectl get pods --all-namespaces --show-labels
+kubectl get pods --all-namespaces [-o wide]
+kubectl describe pods --all-namespaces
 kubectl get pods ngnix -n ngnix-ns -o yaml --export > nginx.yml
 kubectl apply -f nginx.yml -n ngnix-ns
 ```
@@ -30,17 +34,20 @@ kubectl apply -f nginx.yml -n ngnix-ns
 ## You can use various selectors to select different subsets of objects
 
 ```bash
+# labels
 kubectl get pods -l app=my-app
-
-kubectl get pods -l environment=production
-
-kubectl get pods -l environment=development
-
-kubectl get pods -l environment!=production
-
-kubectl get pods -l 'environment in (development,production)'
-
-kubectl get pods -l app=my-app,environment=production
+kubectl get pods -l env=pro
+kubectl get pods -l env=dev
+kubectl get pods -l env!=pro
+kubectl get pods -l 'env in (dev,pro)'
+kubectl get pods -l app=my-app,env=pro
+kubectl get pods -L env
+kubectl label pod <pod-name> env=pro
+# annotations
+kubectl annotate pod <pod-name> my.company/some-annotation="my-company-name"
+# field selectors
+kubectl get pods --field-selector status.phase=Running,metadata.namespace=default
+kubectl get pods --field-selector status.phase=Running,metadata.namespace!=default
 ```
 
 ## You can also use -n to specify a namespace when using kubectl describe

@@ -4,13 +4,9 @@
 
 ```bash
 kubectl get deployments
-
 kubectl get deployment <deployment name>
-
 kubectl describe deployment <deployment name>
-
 kubectl edit deployment <deployment name>
-
 kubectl delete deployment <deployment name>
 ```
 
@@ -24,7 +20,6 @@ kubectl set image deployment/rolling-deployment nginx=nginx:1.7.9 --record
 
 ```bash
 kubectl rollout history deployment/rolling-deployment
-
 kubectl rollout history deployment/rolling-deployment --revision=2
 ```
 
@@ -39,4 +34,3 @@ kubectl rollout undo deployment/rolling-deployment
 ```bash
 kubectl rollout undo deployment/rolling-deployment --to-revision=1
 ```
-
