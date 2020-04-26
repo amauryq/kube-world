@@ -309,7 +309,7 @@ sudo kubeadm token list
 # Print the kubeadm join command to join a node to the cluster
 sudo kubeadm token create [token_name] --ttl 2h --print-join-command
 
-Goto line #45 and follow steps
+Goto Setup instructions and follow steps for worker
 ```
 
 ### Documentation
