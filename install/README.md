@@ -92,33 +92,21 @@ kubectl get nodes
 
 You can provide high availability for cluster components by running multiple instances — however, some replicated components must remain in standby mode. The scheduler and the controller manager are actively watching the cluster state and take action when it changes. If multiples are running, it creates the possibility of unwarranted duplicates of pods.
 
-## Check environment
+### Check environment
 
-1. Which components are in which node
+1. View the pods in the namespace with a custom view. Which components are in which node?
 
 ```bash
 kubectl get pods -o custom-columns=POD:metadata.name,NODE:spec.nodeName --sort-by spec.nodeName -n kube-system
 ```
 
-2. View the kube-scheduler YAML and find who is the leader
+2. View the kube-scheduler YAML. Find who is the leader?
 
 ```bash
 kubectl get endpoints kube-scheduler -n kube-system -o yaml
 ```
 
-## Replicating etcd component
-
-Best to have an odd number and no more than seven for any cluster size
-
-3. Create a stacked etcd topology using kubeadm.
-
-- Download the etcd binaries
-- Extract and move binaries to /usr/local/bin
-- Create two directories:
-   * /etc/etcd
-   * /var/lib/etcd
-- Create the systemd unit file for etcd
-- enable and start etcd service
+3. Create the file kubeadm-config.yml
 
 ```bash
 kubeadm init --config=kubeadm-config.yaml
@@ -130,6 +118,91 @@ kubeadm init --config=kubeadm-config.yaml
 kubectl get pods -n kube-system -w
 ```
 
+### Replicating etcd component
+
+Best to have an odd number and no more than seven for any cluster size
+
+Create a stacked etcd topology using kubeadm.
+
+- Download the etcd binaries
+- Extract and move binaries to /usr/local/bin
+- Create two directories:
+   * /etc/etcd
+   * /var/lib/etcd
+- Create the systemd unit file for etcd
+- enable and start etcd service
+
+Once this is done proceed to replicate the otheres Kubernetes components
+
+## Configure Secure Cluster Communications
+
+To prevent unauthorized users from modifying the cluster state, RBAC is used, defining roles and role bindings for a user. A service account resource is created for a pod to determine how it has control over the cluster state. For example, the default service account will not allow you to list the services in a namespace.
+
+### View the kube-config. Check self-signed certificate
+
+```bash
+cat .kube/config | more
+```
+
+### View the service account token
+
+```bash
+kubectl get secrets
+```
+
+### RBAC in Action
+
+```bash
+# Create a new namespace
+kubectl create ns my-ns
+# Run the kube-proxy pod in the namespace. This pod will serv as a proxy to the API Server.
+kubectl run test --image=chadmcrowell/kubectl-proxy -n my-ns
+# List the pods in the namespace
+kubectl get pods -n my-ns
+# Run a shell in the newly created pod
+kubectl exec -it test -n my-ns sh
+# List the services in the namespace via API call
+curl http://localhost:8001/api/v1/namespaces/my-ns/services
+# View the token file from within a pod
+cat /var/run/secrets/kubernetes.io/serviceaccount/token
+# exit
+# List the service account resources in your cluster
+kubectl get serviceaccounts
+```
+
+## Testing the Kubernetes Cluster
+
+### Checklist
+
+```bash
+# Run a simple nginx deployment
+kubectl run nginx --image=nginx
+# View the deployments in your cluster
+kubectl get deployments
+# View the pods in the cluster:
+kubectl get pods
+# Use port forwarding to access a pod directly
+kubectl port-forward $pod_name 8081:80
+# Get a response from the nginx pod directly
+curl --head http://localhost:8081
+#View the logs from a pod
+kubectl logs $pod_name
+# Run a command directly from the container
+kubectl exec -it $pod_name -- nginx -v
+# Create a service by exposing port 80 of the nginx deployment
+kubectl expose pod nginx --port 80 --type NodePort
+# List the services in your cluster
+kubectl get services
+# Get a response from the service
+curl -I localhost:$node_port
+# List the nodes status
+kubectl get nodes
+# View detailed information about the nodes
+kubectl describe nodes
+# View detailed information about the pods
+kubectl describe pods
+```
+
 ## Documentation
 
 [Kubernetes Binaries](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.0)
@@ -139,3 +212,7 @@ kubectl get pods -n kube-system -w
 [Highly Available Topologies in Kubernetes](https://kubernetes.io/docs/setup/independent/ha-topology/)
 
 [Operating a Highly Available etcd Cluster](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/)
+
+[Kebetest](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-testing/e2e-tests.md)
+
+[Test a Juju Cluster](https://kubernetes.io/docs/setup/)
