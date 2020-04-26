@@ -315,3 +315,43 @@ Goto Setup instructions and follow steps for worker
 ### Documentation
 
 [Maintenance on a Node](https://kubernetes.io/docs/tasks/administer-cluster/cluster-management/#maintenance-on-a-node)
+
+## Backing Up and Restoring a Kubernetes Cluster
+
+Backing up your cluster can be useful, especially if you have a single etcd cluster, as all the cluster state is stored there.
+The etcdctl utility allows us to easily create a snapshot of our cluster state (etcd) and save this to an external location.
+
+```bash
+# Get the etcd binaries
+wget https://github.com/etcd-io/etcd/releases/download/v3.3.12/etcd-v3.3.12-linux-amd64.tar.gz
+
+# Unzip the compressed binaries
+tar xvf etcd-v3.3.12-linux-amd64.tar.gz
+
+# Move the files into /usr/local/bin
+sudo mv etcd-v3.3.12-linux-amd64/etcd* /usr/local/bin
+
+# Take a snapshot of the etcd datastore using etcdctl
+sudo ETCDCTL_API=3 etcdctl snapshot save snapshot.db --cacert /etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt --key /etc/kubernetes/pki/etcd/server.key
+
+# View the help page for etcdctl
+ETCDCTL_API=3 etcdctl --help
+
+# Browse to the folder that contains the certificate files
+cd /etc/kubernetes/pki/etcd/
+
+# View that the snapshot was successful
+ETCDCTL_API=3 etcdctl --write-out=table snapshot status snapshot.db
+
+# Zip up the contents of the etcd directory
+sudo tar -zcvf etcd.tar.gz /etc/kubernetes/pki/etcd
+
+Copy the etcd directory to another server
+scp etcd.tar.gz user@backup-server:~/
+```
+
+### Documentation
+
+[Backing up the etcd Store](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster)
+
+[etcd Disaster Recovery Examples](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md)
