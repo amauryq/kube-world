@@ -278,3 +278,40 @@ sudo apt-mark hold kubelet
 [Upgrading Kubernetes](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/)
 
 [Changelog for v1.16](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.16.md)
+
+## Upgrading the Operating System
+
+When we need to take a node down for maintenance, Kubernetes makes it easy to evict the pods on that node, take it down, and then continue scheduling pods after the maintenance is complete.
+Furthermore, if the node needs to be decommissioned, you can just as easily remove the node and replace it with a new one, joining it to the cluster.
+
+```bash
+# See which pods are running on which nodes
+kubectl get pods -o wide
+
+# Evict the pods on a node
+kubectl drain [node_name] --ignore-daemonsets
+
+# Watch as the node changes status
+kubectl get nodes -w
+
+# Schedule pods to the node after maintenance is complete
+kubectl uncordon [node_name]
+
+# Remove a node from the cluster
+kubectl delete node [node_name]
+
+# Generate a new token
+sudo kubeadm token generate
+
+# List the tokens
+sudo kubeadm token list
+
+# Print the kubeadm join command to join a node to the cluster
+sudo kubeadm token create [token_name] --ttl 2h --print-join-command
+
+Goto line #45 and follow steps
+```
+
+### Documentation
+
+[Maintenance on a Node](https://kubernetes.io/docs/tasks/administer-cluster/cluster-management/#maintenance-on-a-node)
