@@ -22,16 +22,16 @@ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 cat << EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
+
+# Update your packages
+sudo apt-get update
 ```
 
 2. Install Docker and Kubernetes packages
 
 ```bash
-# Update your packages
-sudo apt-get update
-
 # Install Docker, kubelet, kubeadm, and kubectl
-sudo apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu kubelet=1.15.7-00 kubeadm=1.15.7-00 kubectl=1.15.7-00
+sudo apt-get install -y docker-ce=18.06.3~ce~3-0~ubuntu kubelet=1.18.2-00 kubeadm=1.18.2-00 kubectl=1.18.2-00
 
 # Hold them at the current version
 sudo apt-mark hold docker-ce kubelet kubeadm kubectl
@@ -53,7 +53,9 @@ sudo sysctl -p
 
 ```bash
 # Initialize the cluster (run only on the master)
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+$ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+...
+[WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
 ```
 
 5. Set up local kubeconfig
