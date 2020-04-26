@@ -90,6 +90,10 @@ sudo kubeadm join $controller_private_ip:6443 --token $token --discovery-token-c
 kubectl get nodes
 ```
 
+### Documentation
+
+[Kubernetes Binaries](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.0)
+
 ## High Availability
 
 You can provide high availability for cluster components by running multiple instances — however, some replicated components must remain in standby mode. The scheduler and the controller manager are actively watching the cluster state and take action when it changes. If multiples are running, it creates the possibility of unwarranted duplicates of pods.
@@ -135,6 +139,14 @@ Create a stacked etcd topology using kubeadm.
 - enable and start etcd service
 
 Once this is done proceed to replicate the otheres Kubernetes components
+
+### Documentation
+
+[Creating Highly Available Kubernetes Clusters with kubeadm](https://kubernetes.io/docs/setup/independent/high-availability/)
+
+[Highly Available Topologies in Kubernetes](https://kubernetes.io/docs/setup/independent/ha-topology/)
+
+[Operating a Highly Available etcd Cluster](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/)
 
 ## Configure Secure Cluster Communications
 
@@ -205,16 +217,64 @@ kubectl describe nodes
 kubectl describe pods
 ```
 
-## Documentation
-
-[Kubernetes Binaries](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.0)
-
-[Creating Highly Available Kubernetes Clusters with kubeadm](https://kubernetes.io/docs/setup/independent/high-availability/)
-
-[Highly Available Topologies in Kubernetes](https://kubernetes.io/docs/setup/independent/ha-topology/)
-
-[Operating a Highly Available etcd Cluster](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/)
+### Documentation
 
 [Kebetest](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-testing/e2e-tests.md)
 
 [Test a Juju Cluster](https://kubernetes.io/docs/setup/)
+
+## Upgrading Kubernetes Cluster
+
+kubeadm allows us to upgrade our cluster components in the proper order, making sure to include important feature upgrades we might want to take advantage of in the latest stable version of Kubernetes. In this lesson, we will go through upgrading our cluster from version 1.15.9 to 1.16.6.
+
+```bash
+# Get the version of the API server
+kubectl version --short
+
+#View the version of kubelet
+kubectl describe nodes
+
+# View the version of controller-manager pod
+kubectl get pod [controller_pod_name] -o yaml -n kube-system
+
+# Release the hold on versions of kubeadm and kubelet
+sudo apt-mark unhold kubeadm kubelet
+
+# Install version 1.16.6 of kubeadm
+sudo apt install -y kubeadm=1.16.6-00
+
+# Hold the version of kubeadm at 1.16.6
+sudo apt-mark hold kubeadm
+
+# Verify the version of kubeadm
+kubeadm version
+
+# Plan the upgrade of all the controller components
+sudo kubeadm upgrade plan
+
+# Upgrade the controller components
+sudo kubeadm upgrade apply v1.16.6
+
+# Release the hold on the version of kubectl
+sudo apt-mark unhold kubectl
+
+# Upgrade kubectl
+sudo apt install -y kubectl=1.16.6-00
+
+# Hold the version of kubectl at 1.16.6
+sudo apt-mark hold kubectl
+
+# Next two also on workers nodes
+
+# Upgrade the version of kubelet
+sudo apt install -y kubelet=1.16.6-00
+
+# Hold the version of kubelet at 1.16.6
+sudo apt-mark hold kubelet
+```
+
+### Documentation
+
+[Upgrading Kubernetes](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/)
+
+[Changelog for v1.16](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.16.md)
