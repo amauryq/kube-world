@@ -72,13 +72,37 @@ kubectl edit my-pod.yml
 
 ```bash
 kubectl logs my-configmap-pod
-
 kubectl logs my-configmap-volume-pod -c <multi_container_pod>
-
+kubectl exec -it my-pod -- /bin/bash
 kubectl exec my-configmap-volume-pod -- ls /etc/config
-
 kubectl exec my-configmap-volume-pod -- cat /etc/config/myKey
 ```
+
+## Pod and Node Networking
+
+```bash
+# See which node our pod is on
+kubectl get pods -o wide
+
+# Log in to the node
+ssh [node_name]
+
+# View the node's virtual network interfaces
+ifconfig
+
+# View the containers in the pod
+docker ps | grep <my-pod>
+
+# Get the process ID for the container
+docker inspect --format '{{ .State.Pid }}' [container_id]
+
+#Use nsenter to run a command in the process's network namespace
+nsenter -t [container_pid] -n ip addr
+```
+
+### Documentation
+
+[Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/)
 
 ## Installing Metrics Server
 

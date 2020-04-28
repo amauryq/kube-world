@@ -72,6 +72,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 # Apply Flannel CNI network overlay
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
+A Container Network Interface (CNI) is an easy way to ease communication between containers in a cluster. The CNI has many responsibilities, including IP management, encapsulating packets, and mappings in userspace.
 
 ### On each Kube node server
 
