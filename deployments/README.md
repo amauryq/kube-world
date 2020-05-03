@@ -16,7 +16,7 @@ We already know Kubernetes will run pods and deployments, but what happens when 
 
 ```bash
 # Create a deployment with a record (for rollbacks)
-kubectl create -f kubeserve-deployment.yaml --record
+kubectl create -f kubeserve-deployment.yml --record
 
 # Check the status of the rollout
 kubectl rollout status deployments kubeserve
@@ -38,12 +38,12 @@ kubectl patch deployment kubeserve -p '{"spec": {"minReadySeconds": 10}}'
 # Change image to v2
 
 # Use kubectl apply to update a deployment
-kubectl apply -f kubeserve-deployment.yaml
+kubectl apply -f kubeserve-deployment.yml
 
 # Change image to v1
 
 # Use kubectl replace to replace an existing deployment
-kubectl replace -f kubeserve-deployment.yaml
+kubectl replace -f kubeserve-deployment.yml
 
 # This update is best done with following
 
@@ -76,10 +76,52 @@ kubectl rollout pause deployment kubeserve
 
 # Resume the rollout after the rolling update looks good
 kubectl rollout resume deployment kubeserve
+
+# To avoid buggy applications
+
+# Apply the readiness probe
+kubectl apply -f kubeserve-deployment-readiness.yml
+
+# View the rollout status
+kubectl rollout status deployment kubeserve
+
+# Describe deployment
+kubectl describe deployment
 ```
 
 ### Documentation
 
 [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+
 [Creating a Deployment](https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/)
+
 [Performing a Rolling Update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/)
+
+[Scaling Your Application](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/#scaling-your-application)
+
+## Working with ReplicaSets and StatefulSets
+
+```sh
+# Create the ReplicaSet
+kubectl apply -f kubeserver-replicaset.yml
+
+# Create the pod with the same label
+kubectl apply -f kubeserve-pod.yml
+
+# Watch the pod get terminated
+kubectl get pods -w
+
+#Create the StatefulSet
+kubectl apply -f statefulset.yml
+
+# View all StatefulSets in the cluster
+kubectl get statefulsets
+
+# Describe the StatefulSets
+kubectl describe statefulsets
+```
+### Documentation
+
+[ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)
+
+[StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
