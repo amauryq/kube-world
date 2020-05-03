@@ -77,3 +77,37 @@ db.foo.find()
 [PersistentVolumeClaims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
 
 [Create a PersistentVolumeClaim](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim)
+
+## Applications with Persistent Storage
+
+```sh
+# Create our StorageClass object
+kubectl apply -f kubeserve-storageclass-fast.yaml
+
+# View the StorageClass objects in your cluster
+kubectl get sc
+
+# Create our PVC
+kubectl apply -f kubeserve-pvc.yml
+
+# View the PVC created in our cluster
+kubectl get pvc
+
+# View our automatically provisioned PV
+kubectl get pv
+
+# Create our deployment and attach the storage to the pods
+kubectl apply -f kubeserve-deployment.yml
+
+# Check the status of the rollout
+kubectl rollout status deployments kubeserve
+
+# Check the pods have been created
+kubectl get pods
+
+# Connect to our pod and create a file on the PV
+kubectl exec -it [pod-name] -- touch /data/file1.txt
+
+# Connect to our pod and list the contents of the /data directory
+kubectl exec -it [pod-name] -- ls /data
+```
