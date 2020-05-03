@@ -1,19 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: kubeserve
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nginx
+      app: kubeserve
   template:
     metadata:
+      name: kubeserve
       labels:
-        app: nginx
+        app: kubeserve
     spec:
       containers:
-      - name: nginx
-        image: nginx:1.7.9
-        ports:
-        - containerPort: 80
+      - image: linuxacademycontent/kubeserve:v1
+        name: app
