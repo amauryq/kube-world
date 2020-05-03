@@ -1,0 +1,79 @@
+# Storage
+
+## PersistentVolumes and PersistentVolumeClaims
+
+```bash
+# Create the PersistentVolume
+kubectl apply -f my-pv.yml
+
+# Create the PersistentVolumeClaim
+kubectl apply -f my-pvc.yml
+
+# We can use kubectl to check the status of existing PVs and PVCs
+kubectl get pv
+kubectl get pvc
+
+# Create a pod to consume storage resources using a PVC
+kubectl apply -f my-pvc-pod.yml
+```
+## MongoDB
+
+```sh
+# In the Google Cloud Engine, find the region your cluster is in
+gcloud container clusters list
+
+# Using Google Cloud, create a persistent disk in the same region as your cluster
+gcloud compute disks create --size=1GiB --zone=us-central1-a mongodb
+
+# Create the pod with disk attached and mounted
+kubectl apply -f mongodb-pod.yml
+
+# See which node the pod landed on
+kubectl get pods -o wide
+
+# Connect to the mongodb shell
+kubectl exec -it mongodb mongo
+
+# Switch to the mystore database in the mongodb shell
+use mystore
+
+# Create a JSON document to insert into the database
+db.foo.insert({name:'foo'})
+
+# View the document you just created
+db.foo.find()
+
+# Exit from the mongodb shell
+exit
+
+# Delete the pod
+kubectl delete pod mongodb
+
+# Create a new pod with the same attached disk
+kubectl apply -f mongodb-pod.yaml
+
+# Check to see which node the pod landed on
+kubectl get pods -o wide
+
+# Drain the node (if the pod is on the same node as before)
+kubectl drain [node_name] --ignore-daemonsets
+
+# Once the pod is on a different node, access the mongodb shell again
+kubectl exec -it mongodb mongo
+
+# Access the mystore database again
+use mystore
+
+# Find the document you created from before
+db.foo.find()
+```
+
+## Documentation
+
+[Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+
+[Configure Persistent Volume Storage](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/)
+
+[PersistentVolumeClaims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
+
+[Create a PersistentVolumeClaim](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim)
