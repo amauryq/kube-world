@@ -3,19 +3,19 @@
 ## Create PersistentVolume
 
 ```bash
-kubectl apply -f redis-pv.yml
+kubectl apply -f redis-pv.yaml
 ```
 
 ## Create PersistentVolumeClaim
 
 ```bash
-kubectl apply -f redis-pvc.yml
+kubectl apply -f redis-pvc.yaml
 ```
 
 ## Create Pod
 
 ```bash
-kubectl apply -f redis-pod.yml
+kubectl apply -f redis-pod.yaml
 ```
 
 ## Verify Pod was Created

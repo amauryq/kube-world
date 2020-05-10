@@ -4,17 +4,17 @@
 
 ```bash
 # Create the PersistentVolume
-kubectl apply -f my-pv.yml
+kubectl apply -f my-pv.yaml
 
 # Create the PersistentVolumeClaim
-kubectl apply -f my-pvc.yml
+kubectl apply -f my-pvc.yaml
 
 # We can use kubectl to check the status of existing PVs and PVCs
 kubectl get pv
 kubectl get pvc
 
 # Create a pod to consume storage resources using a PVC
-kubectl apply -f my-pvc-pod.yml
+kubectl apply -f my-pvc-pod.yaml
 ```
 ## MongoDB
 
@@ -26,7 +26,7 @@ gcloud container clusters list
 gcloud compute disks create --size=1GiB --zone=us-central1-a mongodb
 
 # Create the pod with disk attached and mounted
-kubectl apply -f mongodb-pod.yml
+kubectl apply -f mongodb-pod.yaml
 
 # See which node the pod landed on
 kubectl get pods -o wide
@@ -88,7 +88,7 @@ kubectl apply -f kubeserve-storageclass-fast.yaml
 kubectl get sc
 
 # Create our PVC
-kubectl apply -f kubeserve-pvc.yml
+kubectl apply -f kubeserve-pvc.yaml
 
 # View the PVC created in our cluster
 kubectl get pvc
@@ -97,7 +97,7 @@ kubectl get pvc
 kubectl get pv
 
 # Create our deployment and attach the storage to the pods
-kubectl apply -f kubeserve-deployment.yml
+kubectl apply -f kubeserve-deployment.yaml
 
 # Check the status of the rollout
 kubectl rollout status deployments kubeserve

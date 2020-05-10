@@ -23,8 +23,8 @@
 ## Create Deployment and expose the deployment's replica pods with a service
 
 ```bash
-kubectl apply -f nginx-deployment.yml
-kubectl apply -f nginx-service-nodeport.yml
+kubectl apply -f nginx-deployment.yaml
+kubectl apply -f nginx-service-nodeport.yaml
 ```
 
 ## You can get more information about the service with these commands
@@ -43,7 +43,7 @@ kubectl get services --field-selector metadata.namespace=default
 ## Connect from busybox pod to the other pods
 
 ```bash
-kubectl apply -f busybox.yml
+kubectl apply -f busybox.yaml
 # test conectivity
 kubectl exec busybox -- curl <pod-ip-address>:<pod-port>
 kubectl exec busybox -- curl <service-ip-address>:<pod-port>
@@ -116,7 +116,7 @@ kubectl get pods -n kube-system
 kubectl get deployments -n kube-system
 kubectl get services -n kube-system
 
-kubectl apply -f busybox.yml
+kubectl apply -f busybox.yaml
 
 # View the resolv.conf file that contains the nameserver and search in DNS
 kubectl exec -it busybox -- cat /etc/resolv.conf
@@ -133,8 +133,8 @@ kubectl exec -it busybox -- nslookup kube-dns.kube-system.svc.cluster.local
 # Get the logs of your CoreDNS pods
 kubectl logs [coredns-pod-name]
 
-kubectl apply -f headless-service.yml
-kubectl apply -f custom-dns-pod.yml
+kubectl apply -f headless-service.yaml
+kubectl apply -f custom-dns-pod.yaml
 
 # Check the DNS configuration for that pod
 kubectl exec -it dns-sample -- cat /etc/resolv.conf

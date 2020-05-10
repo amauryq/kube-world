@@ -15,7 +15,7 @@ kubectl create ns my-ns
 ## Create a pod from the yaml definition file
 
 ```bash
-kubectl create -f my-pod.yml
+kubectl create -f my-pod.yaml
 ```
 
 ## Use the -n flag to specify a namespace when using commands like kubectl get
@@ -27,8 +27,8 @@ kubectl get pods -n my-ns
 kubectl get pods --all-namespaces --show-labels
 kubectl get pods --all-namespaces [-o wide]
 kubectl describe pods --all-namespaces
-kubectl get pods ngnix -n ngnix-ns -o yaml --export > nginx.yml
-kubectl apply -f nginx.yml -n ngnix-ns
+kubectl get pods ngnix -n ngnix-ns -o yaml --export > nginx.yaml
+kubectl apply -f nginx.yaml -n ngnix-ns
 ```
 
 ## You can use various selectors to select different subsets of objects
@@ -59,13 +59,13 @@ kubectl describe pod my-ns-pod -n my-ns
 ## Edit a pod by updating the yaml definiton and re-applying it
 
 ```bash
-kubectl apply -f my-pod.yml
+kubectl apply -f my-pod.yaml
 ```
 
 ## You can also edit a pod like this
 
 ```bash
-kubectl edit my-pod.yml
+kubectl edit my-pod.yaml
 ```
 
 ## Explore how the ConfigMap data interacts with pods and containers

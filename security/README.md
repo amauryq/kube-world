@@ -18,7 +18,7 @@ kubectl get sa jenkins -o yaml
 kubectl get secret <secret_name>
 
 # Create a new pod with the service account
-kubectl apply -f busybox.yml
+kubectl apply -f busybox.yaml
 
 # View the cluster config that kubectl uses
 kubectl config view
@@ -72,7 +72,7 @@ Once the API server has determined who you are (whether a pod or a user), the au
 kubectl create ns web
 
 # Create a new role for services
-kubectl apply -f role.yml
+kubectl apply -f role.yaml
 
 # Create a RoleBinding
 kubectl create rolebinding test --role=service-reader --serviceaccount=web:default -n web
@@ -90,7 +90,7 @@ kubectl create clusterrole pv-reader --verb=get,list --resource=persistentvolume
 kubectl create clusterrolebinding pv-test --clusterrole=pv-reader --serviceaccount=web:default
 
 # Create the pod that will allow you to curl directly from the container
-kubectl apply -f curl-pod.yml
+kubectl apply -f curl-pod.yaml
 
 # Get the pods in the web namespace
 kubectl get pods -n web

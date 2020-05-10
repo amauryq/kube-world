@@ -70,7 +70,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 ```bash
 # Apply Flannel CNI network overlay
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yaml
 ```
 A Container Network Interface (CNI) is an easy way to ease communication between containers in a cluster. The CNI has many responsibilities, including IP management, encapsulating packets, and mappings in userspace.
 
@@ -113,7 +113,7 @@ kubectl get pods -o custom-columns=POD:metadata.name,NODE:spec.nodeName --sort-b
 kubectl get endpoints kube-scheduler -n kube-system -o yaml
 ```
 
-3. Create the file kubeadm-config.yml
+3. Create the file kubeadm-config.yaml
 
 ```bash
 kubeadm init --config=kubeadm-config.yaml

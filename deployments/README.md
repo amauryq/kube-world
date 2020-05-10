@@ -16,7 +16,7 @@ We already know Kubernetes will run pods and deployments, but what happens when 
 
 ```bash
 # Create a deployment with a record (for rollbacks)
-kubectl create -f kubeserve-deployment.yml --record
+kubectl create -f kubeserve-deployment.yaml --record
 
 # Check the status of the rollout
 kubectl rollout status deployments kubeserve
@@ -38,12 +38,12 @@ kubectl patch deployment kubeserve -p '{"spec": {"minReadySeconds": 10}}'
 # Change image to v2
 
 # Use kubectl apply to update a deployment
-kubectl apply -f kubeserve-deployment.yml
+kubectl apply -f kubeserve-deployment.yaml
 
 # Change image to v1
 
 # Use kubectl replace to replace an existing deployment
-kubectl replace -f kubeserve-deployment.yml
+kubectl replace -f kubeserve-deployment.yaml
 
 # This update is best done with following
 
@@ -80,7 +80,7 @@ kubectl rollout resume deployment kubeserve
 # To avoid buggy applications
 
 # Apply the readiness probe
-kubectl apply -f kubeserve-deployment-readiness.yml
+kubectl apply -f kubeserve-deployment-readiness.yaml
 
 # View the rollout status
 kubectl rollout status deployment kubeserve
@@ -103,16 +103,16 @@ kubectl describe deployment
 
 ```sh
 # Create the ReplicaSet
-kubectl apply -f kubeserver-replicaset.yml
+kubectl apply -f kubeserver-replicaset.yaml
 
 # Create the pod with the same label
-kubectl apply -f kubeserve-pod.yml
+kubectl apply -f kubeserve-pod.yaml
 
 # Watch the pod get terminated
 kubectl get pods -w
 
 #Create the StatefulSet
-kubectl apply -f statefulset.yml
+kubectl apply -f statefulset.yaml
 
 # View all StatefulSets in the cluster
 kubectl get statefulsets

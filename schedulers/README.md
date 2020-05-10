@@ -40,8 +40,8 @@ kubectl get pods -o wide
 # Taint one of the worker nodes to repel work
 kubectl taint node <node_name> node-type=prod:NoSchedule
 
-kubectl apply -f deployment-2-dev.yml
-kubectl apply -f deployment-2-prod.yml
+kubectl apply -f deployment-2-dev.yaml
+kubectl apply -f deployment-2-prod.yaml
 
 # Verify each pod has been scheduled and verify the toleration. No dev pods in tainted node.
 kubectl get pods -o wide
@@ -52,10 +52,10 @@ kubectl get pods -o wide
 In Kubernetes, you can run multiple schedulers simultaneously. You can then use different schedulers to schedule different pods. You may, for example, want to set different rules for the scheduler to run all of your pods on one node.
 
 ```bash
-kubectl apply -f cluster-role.yml
-kubectl apply -f cluster-role-binding.yml
-kubectl apply -f role.yml
-kubectl apply -f role-binding.yml
+kubectl apply -f cluster-role.yaml
+kubectl apply -f cluster-role-binding.yaml
+kubectl apply -f role.yaml
+kubectl apply -f role-binding.yaml
 
 # Edit the existing kube-scheduler cluster role
 kubectl edit clusterrole system:kube-scheduler
@@ -82,13 +82,13 @@ kubectl edit clusterrole system:kube-scheduler
   - list
   - get
 
-kubectl apply -f my-scheduler.yml
+kubectl apply -f my-scheduler.yaml
 
 # Schedule pods to schedules
 
-kubectl apply -f pod1.yml
-kubectl apply -f pod2.yml
-kubectl apply -f pod3.yml
+kubectl apply -f pod1.yaml
+kubectl apply -f pod2.yaml
+kubectl apply -f pod3.yaml
 
 # View the pods as they are created
 kubectl get pods -o wide
@@ -101,12 +101,12 @@ kubectl get pods -o wide
 ## Scheduling Pods with Resource Limits and Label Selectors
 
 ```bash
-kubectl apply -f resource-pod1.yml
+kubectl apply -f resource-pod1.yaml
 
 # Check pod is running
 kubectl get pods -o wide
 
-kubectl apply -f resource-pod2.yml
+kubectl apply -f resource-pod2.yaml
 
 # See why the pod with a large request didn’t get scheduled
 kubectl describe resource-pod2
@@ -144,7 +144,7 @@ kubectl get daemonsets -n kube-system -o wide
 kubectl delete pod [pod_name] -n kube-system
 
 # Create a DaemonSet
-kubectl apply -f ssd-monitor.yml
+kubectl apply -f ssd-monitor.yaml
 
 # Give the node a label to signify it has SSD
 kubectl label node [node_name] disk=ssd

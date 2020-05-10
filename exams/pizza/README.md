@@ -9,13 +9,13 @@ kubectl create namespace pizza
 ## Create Deployment
 
 ```bash
-kubectl apply -f pizza-deployment.yml
+kubectl apply -f pizza-deployment.yaml
 ```
 
 ## Create Service
 
 ```bash
-kubectl apply -f pizza-service.yml
+kubectl apply -f pizza-service.yaml
 ```
 
 ## Test

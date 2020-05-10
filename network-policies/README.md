@@ -11,13 +11,13 @@ kubectl apply -f canal.yaml
 ## Create a sample nginx pod
 
 ```bash
-kubectl apply -f network-policy-secure-pod.yml
+kubectl apply -f network-policy-secure-pod.yaml
 ```
 
 ## Create a client pod which can be used to test network access to the Nginx pod
 
 ```bash
-kubectl apply -f network-policy-client-pod.yml
+kubectl apply -f network-policy-client-pod.yaml
 ```
 
 ## Use this command to get the cluster IP address of the Nginx pod
@@ -52,10 +52,10 @@ wget -O canal.yaml https://docs.projectcalico.org/v3.5/getting-started/kubernete
 kubectl apply -f canal.yaml
 
 # Deny communications to all pods in the namespace
-kubectl apply -f deny-all-netpolicy.yml
+kubectl apply -f deny-all-netpolicy.yaml
 
 # Run a deployment to test the NetworkPolicy
-kubectl apply -f nginx.yml
+kubectl apply -f nginx.yaml
 
 # Create a service for the deployment
 kubectl expose deployment nginx --port=80
