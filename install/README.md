@@ -6,7 +6,7 @@
 
 1. Set up the Docker and Kubernetes repositories
 
-```bash
+```sh
 # Get the Docker gpg key
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
@@ -29,7 +29,7 @@ sudo apt-get update
 
 2. Install Docker and Kubernetes packages
 
-```bash
+```sh
 # Install Docker, kubelet, kubeadm, and kubectl
 sudo apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu kubelet=1.15.7-00 kubeadm=1.15.7-00 kubectl=1.15.7-00
 
@@ -39,7 +39,7 @@ sudo apt-mark hold docker-ce kubelet kubeadm kubectl
 
 3. Enable iptables bridge call
 
-```bash
+```sh
 # Add the iptables rule to sysctl.conf
 echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
 
@@ -51,7 +51,7 @@ sudo sysctl -p
 
 4. Initialize the cluster
 
-```bash
+```sh
 # Initialize the cluster (run only on the master)
 $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 ...
@@ -60,7 +60,7 @@ $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 
 5. Set up local kubeconfig
 
-```bash
+```sh
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
@@ -68,17 +68,18 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 6. Install Flannel networking
 
-```bash
+```sh
 # Apply Flannel CNI network overlay
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yaml
 ```
+
 A Container Network Interface (CNI) is an easy way to ease communication between containers in a cluster. The CNI has many responsibilities, including IP management, encapsulating packets, and mappings in userspace.
 
 ### On each Kube node server
 
 7. Join the node to the cluster
 
-```bash
+```sh
 # the full command is given when you init the master
 sudo kubeadm join $controller_private_ip:6443 --token $token --discovery-token-ca-cert-hash $hash
 ```
@@ -87,11 +88,11 @@ sudo kubeadm join $controller_private_ip:6443 --token $token --discovery-token-c
 
 9. Verify that all nodes are joined and ready
 
-```bash
+```sh
 kubectl get nodes
 ```
 
-### Documentation
+### Documentation - Build Your Cluster
 
 [Kubernetes Binaries](https://github.com/kubernetes/kubernetes/releases/tag/v1.18.0)
 
@@ -103,25 +104,25 @@ You can provide high availability for cluster components by running multiple ins
 
 1. View the pods in the namespace with a custom view. Which components are in which node?
 
-```bash
+```sh
 kubectl get pods -o custom-columns=POD:metadata.name,NODE:spec.nodeName --sort-by spec.nodeName -n kube-system
 ```
 
 2. View the kube-scheduler YAML. Find who is the leader?
 
-```bash
+```sh
 kubectl get endpoints kube-scheduler -n kube-system -o yaml
 ```
 
 3. Create the file kubeadm-config.yaml
 
-```bash
+```sh
 kubeadm init --config=kubeadm-config.yaml
 ```
 
 4. Watch as pods are created
 
-```bash
+```sh
 kubectl get pods -n kube-system -w
 ```
 
@@ -141,7 +142,7 @@ Create a stacked etcd topology using kubeadm.
 
 Once this is done proceed to replicate the otheres Kubernetes components
 
-### Documentation
+### Documentation - High Availability
 
 [Creating Highly Available Kubernetes Clusters with kubeadm](https://kubernetes.io/docs/setup/independent/high-availability/)
 
@@ -155,19 +156,19 @@ To prevent unauthorized users from modifying the cluster state, RBAC is used, de
 
 ### View the kube-config. Check self-signed certificate
 
-```bash
+```sh
 cat .kube/config | more
 ```
 
 ### View the service account token
 
-```bash
+```sh
 kubectl get secrets
 ```
 
 ### RBAC in Action
 
-```bash
+```sh
 # Create a new namespace
 kubectl create ns my-ns
 # Run the kube-proxy pod in the namespace. This pod will serv as a proxy to the API Server.
@@ -189,7 +190,7 @@ kubectl get serviceaccounts
 
 ### Checklist
 
-```bash
+```sh
 # Run a simple nginx deployment
 kubectl run nginx --image=nginx
 # View the deployments in your cluster
@@ -218,7 +219,7 @@ kubectl describe nodes
 kubectl describe pods
 ```
 
-### Documentation
+### Documentation - Testing the Kubernetes Cluster
 
 [Kebetest](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-testing/e2e-tests.md)
 
@@ -228,7 +229,7 @@ kubectl describe pods
 
 kubeadm allows us to upgrade our cluster components in the proper order, making sure to include important feature upgrades we might want to take advantage of in the latest stable version of Kubernetes. In this lesson, we will go through upgrading our cluster from version 1.15.9 to 1.16.6.
 
-```bash
+```sh
 # Get the version of the API server
 kubectl version --short
 
@@ -274,7 +275,7 @@ sudo apt install -y kubelet=1.16.6-00
 sudo apt-mark hold kubelet
 ```
 
-### Documentation
+### Documentation - Upgrading Kubernetes Cluster
 
 [Upgrading Kubernetes](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/)
 
@@ -285,7 +286,7 @@ sudo apt-mark hold kubelet
 When we need to take a node down for maintenance, Kubernetes makes it easy to evict the pods on that node, take it down, and then continue scheduling pods after the maintenance is complete.
 Furthermore, if the node needs to be decommissioned, you can just as easily remove the node and replace it with a new one, joining it to the cluster.
 
-```bash
+```sh
 # See which pods are running on which nodes
 kubectl get pods -o wide
 
@@ -313,7 +314,7 @@ sudo kubeadm token create [token_name] --ttl 2h --print-join-command
 Goto Setup instructions and follow steps for worker
 ```
 
-### Documentation
+### Documentation - Upgrading the Operating System
 
 [Maintenance on a Node](https://kubernetes.io/docs/tasks/administer-cluster/cluster-management/#maintenance-on-a-node)
 
@@ -322,7 +323,7 @@ Goto Setup instructions and follow steps for worker
 Backing up your cluster can be useful, especially if you have a single etcd cluster, as all the cluster state is stored there.
 The etcdctl utility allows us to easily create a snapshot of our cluster state (etcd) and save this to an external location.
 
-```bash
+```sh
 # Get the etcd binaries
 wget https://github.com/etcd-io/etcd/releases/download/v3.3.12/etcd-v3.3.12-linux-amd64.tar.gz
 
@@ -351,7 +352,7 @@ Copy the etcd directory to another server
 scp etcd.tar.gz user@backup-server:~/
 ```
 
-### Documentation
+### Documentation - Backing Up and Restoring a Kubernetes Cluster
 
 [Backing up the etcd Store](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster)
 

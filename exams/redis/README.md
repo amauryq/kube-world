@@ -31,6 +31,7 @@ kubectl exec -it redispod redis-cli
 ```
 
 ## Set the key space server:name and value "redis server"
+
 ```bash
 SET server:name "redis server"
 ```
@@ -42,10 +43,13 @@ GET server:name
 ```
 
 ## Exit the redis-cli
+
 ```bash
 QUIT
 ```
+
 ## Delete the Pod and Repeat from ## Create Pod step
+
 ```bash
 kubectl delete pod redis-pod
 ```
