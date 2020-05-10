@@ -38,3 +38,39 @@ kubectl exec network-policy-client-pod -- curl <secure pod cluster ip address>
 kubectl get networkpolicies
 kubectl describe networkpolicy my-network-policy
 ```
+
+## Configuring Network Policies
+
+Network policies allow you to specify which pods can talk to other pods. This helps when securing communication between pods, allowing you to identify ingress and egress rules. You can apply a network policy to a pod by using pod or namespace selectors. You can even choose a CIDR block range to apply the network policy.
+
+```sh
+# Download the canal plugin. Network policies require this
+wget -O canal.yaml https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/canal/canal.yaml
+
+# Set apiVersion for DaemonSet to apps/v1
+# Apply the canal plugin
+kubectl apply -f canal.yaml
+
+# Deny communications to all pods in the namespace
+kubectl apply -f deny-all-netpolicy.yml
+
+# Run a deployment to test the NetworkPolicy
+kubectl apply -f nginx.yml
+
+# Create a service for the deployment
+kubectl expose deployment nginx --port=80
+
+# Attempt to access the service by using a busybox interactive pod
+kubectl run --generator=run-pod/v1 busybox --rm -it --image=busybox /bin/sh
+# This will fail because the deny-all net policy
+wget --spider --timeout=1 nginx
+
+# Label a pod to get the NetworkPolicy
+kubectl label pods [pod_name] app=db
+```
+
+### Documentation
+
+[Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+[Declare Network Policies](https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/)
+[Default Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/#default-policies)

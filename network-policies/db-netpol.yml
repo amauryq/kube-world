@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: ns-netpolicy
+  name: db-netpol
 spec:
   podSelector:
     matchLabels:
       app: db
   ingress:
   - from:
-    - namespaceSelector:
+    - podSelector:
         matchLabels:
-          tenant: web
+          app: web
     ports:
     - port: 5432
