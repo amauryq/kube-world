@@ -131,7 +131,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 # Check to see if you have cfssl installed correctly
 cfssl version
 
-# Create a CSR file
+# Create a CSR and private key PEM file
 cat <<EOF | cfssl genkey - | cfssljson -bare server
 {
   "hosts": [
