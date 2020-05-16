@@ -7,6 +7,8 @@ kubectl get deployments
 kubectl get deployment <deployment name>
 kubectl describe deployment <deployment name>
 kubectl edit deployment <deployment name>
+# If we want to use a different editor
+KUBE_EDITOR="nano" kubectl edit deployment <deployment name>
 kubectl delete deployment <deployment name>
 ```
 
@@ -89,7 +91,7 @@ kubectl rollout status deployment kubeserve
 kubectl describe deployment
 ```
 
-### Documentation
+### Documentation - Deploying an Application, Rolling Updates, and Rollbacks
 
 [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
@@ -120,7 +122,8 @@ kubectl get statefulsets
 # Describe the StatefulSets
 kubectl describe statefulsets
 ```
-### Documentation
+
+### Documentation - Working with ReplicaSets and StatefulSets
 
 [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)
 

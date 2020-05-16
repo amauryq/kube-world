@@ -13,9 +13,12 @@ kubectl api-resources -o name
 # nodes
 kubectl get nodes [-o wide]
 kubectl get nodes $node_name
-kubectl get nodes $node_name -o yaml 
+kubectl get nodes $node_name -o yaml
 kubectl describe nodes
 kubectl describe node $node_name
+# misc
+# Here's an example of copying a local file to a container. The syntax follows
+kubectl cp <filename> <namespace/podname:/path/tofile>
 ```
 
 ## Relevant Documentation
@@ -25,5 +28,3 @@ kubectl describe node $node_name
 [Kubernetes Objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects)
 
 [Kubernetes Documentation](https://kubernetes.io/docs/home/)
-
-

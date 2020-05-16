@@ -66,6 +66,8 @@ kubectl apply -f my-pod.yaml
 
 ```bash
 kubectl edit my-pod.yaml
+# If we want to use a different editor
+KUBE_EDITOR="nano" kubectl edit my-pod.yaml
 ```
 
 ## Explore how the ConfigMap data interacts with pods and containers
@@ -103,22 +105,6 @@ nsenter -t [container_pid] -n ip addr
 ### Documentation
 
 [Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/)
-
-## Installing Metrics Server
-
-### Clone the metrics server repo and install the server using kubectl apply
-
-```bash
-cd ~/
-git clone https://github.com/linuxacademy/metrics-server
-kubectl apply -f ~/metrics-server/deploy/1.8+/
-```
-
-### Once you have installed the metrics server, you can use this command to verify that it is responsive
-
-```bash
-kubectl get --raw /apis/metrics.k8s.io/
-```
 
 ## Creating a ServiceAccount looks like this
 
