@@ -2,15 +2,13 @@
 
 ## Build Your Cluster
 
-### On all servers
-
-1. Set up the Docker and Kubernetes repositories
+### Set up the Docker and Kubernetes repositories - On all servers
 
 ```sh
 # Get the Docker gpg key
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-# Add the Docker repository
+# Add the Docker repository. You can unse docker-io package from ubuntu
 sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
@@ -25,21 +23,15 @@ EOF
 
 # Update your packages
 sudo apt-get update
-```
 
-2. Install Docker and Kubernetes packages
-
-```sh
 # Install Docker, kubelet, kubeadm, and kubectl
 sudo apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu kubelet=1.15.7-00 kubeadm=1.15.7-00 kubectl=1.15.7-00
+# If you don't want to specify exact version use. v1.13 require cni
+# kubeadm=1.13\* kubectl=1.13\* kubelet=1.13\* kubernetes-cni=0.7\*
 
 # Hold them at the current version
 sudo apt-mark hold docker-ce kubelet kubeadm kubectl
-```
 
-3. Enable iptables bridge call
-
-```sh
 # Add the iptables rule to sysctl.conf
 echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
 
@@ -47,48 +39,39 @@ echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 ```
 
-### On the Kube master server
-
-4. Initialize the cluster
+### Initialize the cluster - On the Kube master server
 
 ```sh
 # Initialize the cluster (run only on the master)
-$ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+$ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 [--kubernetes-version stable-1.13 --token-ttl 0]
+
 ...
 [WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
-```
 
-5. Set up local kubeconfig
-
-```sh
+# Set up local kubeconfig
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-```
 
-6. Install Flannel networking
-
-```sh
 # Apply Flannel CNI network overlay
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yaml
+# Or install Specific version
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/revert-1043-v0.10.0-documentation/Documentation/kube-flannel.yml
 ```
 
-A Container Network Interface (CNI) is an easy way to ease communication between containers in a cluster. The CNI has many responsibilities, including IP management, encapsulating packets, and mappings in userspace.
+* A Container Network Interface (CNI) is an easy way to ease communication between containers in a cluster. The CNI has many responsibilities, including IP management, encapsulating packets, and mappings in userspace.
 
-### On each Kube node server
-
-7. Join the node to the cluster
+### Join the node to the cluster - On each Kube node server
 
 ```sh
-# the full command is given when you init the master
+# The full command is given when you init the master
 sudo kubeadm join $controller_private_ip:6443 --token $token --discovery-token-ca-cert-hash $hash
 ```
 
 ### Verify
 
-9. Verify that all nodes are joined and ready
-
 ```sh
+# Verify that all nodes are joined and ready
 kubectl get nodes
 ```
 
@@ -357,3 +340,32 @@ scp etcd.tar.gz user@backup-server:~/
 [Backing up the etcd Store](https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#backing-up-an-etcd-cluster)
 
 [etcd Disaster Recovery Examples](https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md)
+
+## Install Helm
+
+### Install Rook  (cloud Native Storage)
+
+```sh
+# Make sure that you get the correct version of rook, in this course we are using rook 0.9
+git clone https://github.com/linuxacademy/content-kubernetes-helm.git ./rook
+# Or use the original repo
+git clone https://github.com/rook/rook.git ./rook
+# And
+cd ./rook/cluster/examples/kubernetes/ceph
+kubectl create -f operator.yaml
+
+# Once the agent, operator and discover pods are started in the rook-ceph-system namespace then setup the cluster
+kubectl create -f cluster.yaml
+
+# Once this is run wait for the appearance of the OSD pods in the name space rook-ceph
+kubectl get pods -n rook-ceph
+
+# Create a storage class so that we can attach to it.
+kubectl create -f storageclass.yaml
+```
+
+### Install helm
+
+```sh
+sudo snap install helm --classic
+```
