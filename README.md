@@ -28,3 +28,18 @@ kubectl cp <filename> <namespace/podname:/path/tofile>
 [Kubernetes Objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects)
 
 [Kubernetes Documentation](https://kubernetes.io/docs/home/)
+
+## Accessing Kubernetes API
+
+```shell
+# Using kubectl proxy
+kubectl proxy --port=8080
+curl http://localhost:8080/api
+# directly
+# get the api server
+kubectl config view
+# get the default token
+kubectl describe secret
+# make the call
+curl -X GET $APISERVER/api --header "Authorization: Bearer $TOKEN" --insecure
+```
