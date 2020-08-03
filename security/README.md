@@ -382,6 +382,7 @@ kubectl exec example-https -c web-server -- mount | grep certs
 
 # Use port forwarding on the pod to server traffic from 443
 kubectl port-forward example-https 8443:443 &
+# alternate way of port forwarding is ssh -L <node-port>:localhost:<local-port> <user>@<cluster-ip>
 
 # In anew session, curl the web server to get a response
 curl https://localhost:8443 -k

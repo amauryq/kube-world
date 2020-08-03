@@ -91,6 +91,13 @@ kubectl rollout status deployment kubeserve
 kubectl describe deployment
 ```
 
+## Auto Scaling
+
+```sh
+kubectl autoscale deployment front-end -n sock-shop --min 2 --max 6 --cpu-percent 65
+kubectl get hpa -n sock-shop
+```
+
 ### Documentation - Deploying an Application, Rolling Updates, and Rollbacks
 
 [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
